@@ -1,1 +1,36 @@
+```{r library loading}
+library(tidyverse)
+library(readxl)
+library(janitor)
+library(sysfonts)
+library(showtext)
+```
 
+```{r pulling data}
+#Copy and pasted 24-25 szn data from barttorvik.com into a Google sheet and saved as csv
+data2025 <- read_excel("C:/Users/caleb/Downloads/CollegeStats2425.xlsx") %>%
+  clean_names()  # makes fg% into fg_pct, etc.
+```
+
+```{r loading custom theme settings & fonts}
+font_add_google("Poppins", "Poppins")
+showtext_auto()
+
+custom_theme = theme_minimal(base_family = "Poppins") +
+  theme(plot.background = element_rect(fill = "#f6f4ef", color = NA),   
+    panel.background = element_rect(fill = "#f6f4ef", color = NA),
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5, color = "#1a1a1a"),  
+    axis.title = element_text(size = 12, face = "bold", color = "#1a1a1a", margin = margin(r = 25)),
+    axis.title.y = element_text(margin = margin(r = 12)),
+    axis.title.x = element_text(margin = margin(t = 10)),
+    plot.caption = element_text(size = 4, color = "#6e6e6e"))
+```
+
+```{r basic visualizations}
+ggplot(data2025, aes(x = bpm, y = conf)) + 
+  geom_boxplot() + custom_theme + 
+  labs(title = "Player BPM Across Conferences",
+    x = "BPM",
+    y = "Conference",
+    caption = "Data: barttorvik.com | Plot: Caleb Ramsey")
+```
